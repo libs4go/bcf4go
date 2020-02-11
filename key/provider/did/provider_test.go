@@ -1,6 +1,7 @@
 package eth
 
 import (
+	"encoding/hex"
 	"testing"
 
 	"github.com/libs4go/bcf4go/key"
@@ -38,4 +39,21 @@ func TestSign(t *testing.T) {
 	require.NoError(t, err)
 
 	require.True(t, ok)
+}
+
+func TestEncryptBlock(t *testing.T) {
+	k, err := key.RandomKey("did")
+	require.NoError(t, err)
+
+	c, err := key.Encrypt("did", k.PubKey(), []byte("hello world"))
+
+	require.NoError(t, err)
+
+	println(hex.EncodeToString(c))
+
+	c, err = key.Decrypt("did", k.PriKey(), c)
+
+	require.NoError(t, err)
+
+	require.Equal(t, c, []byte("hello world"))
 }

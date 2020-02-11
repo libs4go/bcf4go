@@ -11,6 +11,7 @@ import (
 
 	"github.com/libs4go/bcf4go/base58"
 	"github.com/libs4go/bcf4go/ecdsax"
+	"github.com/libs4go/bcf4go/ecies"
 	"github.com/libs4go/bcf4go/hash160"
 	"github.com/libs4go/bcf4go/key"
 	"github.com/libs4go/bcf4go/secp256k1"
@@ -183,6 +184,17 @@ func (provider *didProvider) PrivateToPublic(privateKey []byte) []byte {
 
 func (provider *didProvider) Curve() elliptic.Curve {
 	return secp256k1.SECP256K1()
+}
+
+// EncryptBlock .
+func (provider *didProvider) Encrypt(pubkey []byte, message []byte) ([]byte, error) {
+
+	return ecies.Encrypt(rand.Reader, ecies.ImportECDSAPublic(ecdsax.BytesToPublicKey(provider.Curve(), pubkey)), message, nil, nil)
+}
+
+// DecryptBlock .
+func (provider *didProvider) Decrypt(privkey []byte, message []byte) ([]byte, error) {
+	return ecies.ImportECDSA(ecdsax.BytesToPrivateKey(privkey, provider.Curve())).Decrypt(message, nil, nil)
 }
 
 func (provider *didProvider) Sign(priKey []byte, hashed []byte) ([]byte, error) {
