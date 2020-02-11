@@ -179,6 +179,45 @@ func (provider *ethProvider) Curve() elliptic.Curve {
 	return secp256k1.SECP256K1()
 }
 
+func (provider *ethProvider) Sign(priKey []byte, hashed []byte) ([]byte, error) {
+
+	privateKey := ecdsax.BytesToPrivateKey(priKey, secp256k1.SECP256K1())
+
+	sig, err := recoverable.Sign(privateKey, hashed, false)
+
+	if err != nil {
+		return nil, err
+	}
+
+	size := privateKey.Curve.Params().BitSize / 8
+
+	buff := make([]byte, 2*size+1)
+
+	r := sig.R.Bytes()
+
+	if len(r) > size {
+		r = r[:size]
+	}
+
+	s := sig.S.Bytes()
+
+	if len(s) > size {
+		s = s[:size]
+	}
+
+	copy(buff[size-len(r):size], r)
+	copy(buff[2*size-len(s):2*size], s)
+	buff[2*size] = sig.V.Bytes()[0]
+
+	return buff, nil
+}
+
+func (provider *ethProvider) PrivateToPublic(privateKey []byte) []byte {
+	key := ecdsax.BytesToPrivateKey(privateKey, secp256k1.SECP256K1())
+
+	return ecdsax.PublicKeyBytes(&key.PublicKey)
+}
+
 func init() {
 	key.RegisterProvider(&ethProvider{name: "eth"})
 }

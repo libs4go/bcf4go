@@ -5,7 +5,6 @@ import (
 	"crypto/elliptic"
 	"crypto/rand"
 	"crypto/sha256"
-	"encoding/hex"
 	"fmt"
 	"math/big"
 	"strings"
@@ -157,25 +156,68 @@ func (provider *didProvider) Recover(sig []byte, hash []byte) (pubkey []byte, er
 
 func (provider *didProvider) ValidAddress(address string) bool {
 
-	address = strings.TrimPrefix(address, "0x")
+	tokens := strings.Split(address, ":")
 
-	if len(address) != 40 {
+	if len(tokens) != 3 {
 		return false
 	}
 
-	_, err := hex.DecodeString(address)
+	if tokens[0] != provider.vendor {
+		return false
+	}
+
+	_, v, err := base58.CheckDecode(tokens[2])
 
 	if err != nil {
 		return false
 	}
 
-	return true
+	return v == version
+}
+
+func (provider *didProvider) PrivateToPublic(privateKey []byte) []byte {
+	key := ecdsax.BytesToPrivateKey(privateKey, secp256k1.SECP256K1())
+
+	return ecdsax.PublicKeyBytes(&key.PublicKey)
 }
 
 func (provider *didProvider) Curve() elliptic.Curve {
 	return secp256k1.SECP256K1()
 }
 
+func (provider *didProvider) Sign(priKey []byte, hashed []byte) ([]byte, error) {
+
+	privateKey := ecdsax.BytesToPrivateKey(priKey, secp256k1.SECP256K1())
+
+	sig, err := recoverable.Sign(privateKey, hashed, false)
+
+	if err != nil {
+		return nil, err
+	}
+
+	size := privateKey.Curve.Params().BitSize / 8
+
+	buff := make([]byte, 2*size+1)
+
+	r := sig.R.Bytes()
+
+	if len(r) > size {
+		r = r[:size]
+	}
+
+	s := sig.S.Bytes()
+
+	if len(s) > size {
+		s = s[:size]
+	}
+
+	copy(buff[size-len(r):size], r)
+	copy(buff[2*size-len(s):2*size], s)
+	buff[2*size] = sig.V.Bytes()[0]
+
+	return buff, nil
+}
+
 func init() {
-	key.RegisterProvider(&didProvider{name: "eth"})
+	key.RegisterProvider(&didProvider{name: "did"})
 }

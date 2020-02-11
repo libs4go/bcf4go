@@ -28,6 +28,7 @@ type Provider interface {
 	RandomKey() (Key, error)                            // create new random key
 	FromPriKey(priKey []byte) (Key, error)              // create key facade with private key bytes
 	Verify(pubkey []byte, sig []byte, hash []byte) bool // verify signature
+	Sign(prikey []byte, hashed []byte) ([]byte, error)  // sign the hashed message
 }
 
 // EllipticProvider .
@@ -58,6 +59,28 @@ type Encoding interface {
 	Name() string
 	Encode(privKey []byte, property Property, writer io.Writer) error
 	Decode(property Property, reader io.Reader) ([]byte, error)
+}
+
+// Sign .
+func Sign(providerName string, prikey []byte, hashed []byte) ([]byte, error) {
+	var provider Provider
+
+	if err := getProvider(providerName, &provider); err != nil {
+		panic(errors.Wrap(err, "provider with name %s not found, call RegisterProvider first", providerName))
+	}
+
+	return provider.Sign(prikey, hashed)
+}
+
+// Verify .
+func Verify(providerName string, pubkey []byte, sig []byte, hash []byte) bool {
+	var provider Provider
+
+	if err := getProvider(providerName, &provider); err != nil {
+		panic(errors.Wrap(err, "provider with name %s not found, call RegisterProvider first", providerName))
+	}
+
+	return provider.Verify(pubkey, sig, hash)
 }
 
 // Curve .
