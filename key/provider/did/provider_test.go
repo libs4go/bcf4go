@@ -57,3 +57,13 @@ func TestEncryptBlock(t *testing.T) {
 
 	require.Equal(t, c, []byte("hello world"))
 }
+
+func TestMnemonic(t *testing.T) {
+	mnemonic, err := key.RandomMnemonic(32)
+
+	require.NoError(t, err)
+
+	_, err = key.DriveKey("eth", mnemonic, "m/44'/201910'/0'/0/0")
+
+	require.NoError(t, err)
+}

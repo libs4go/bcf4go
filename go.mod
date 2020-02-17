@@ -4,7 +4,7 @@ go 1.13
 
 require (
 	github.com/libs4go/errors v0.0.3
-	github.com/libs4go/sdi4go v0.0.0-20191107032536-9900892950bc
+	github.com/libs4go/sdi4go v0.0.2
 	github.com/pborman/uuid v1.2.0
 	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.4.0

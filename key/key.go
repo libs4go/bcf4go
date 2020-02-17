@@ -245,7 +245,7 @@ func DriveKey(providerName string, mnemonic string, path string) (Key, error) {
 	var provider EllipticProvider
 
 	if err := getProvider(providerName, &provider); err != nil {
-		errors.Wrap(err, "provider with name %s not found, call RegisterProvider first", providerName)
+		return nil, errors.Wrap(err, "provider with name %s not found, call RegisterProvider first", providerName)
 	}
 
 	masterkey, err := bip32.FromMnemonic(provider, mnemonic, "")
