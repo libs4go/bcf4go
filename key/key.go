@@ -61,6 +61,11 @@ type Encoding interface {
 	Decode(property Property, reader io.Reader) ([]byte, error)
 }
 
+// SignWithKey .
+func SignWithKey(key Key, hashed []byte) ([]byte, error) {
+	return Sign(key.Provider().Name(), key.PriKey(), hashed)
+}
+
 // Sign .
 func Sign(providerName string, prikey []byte, hashed []byte) ([]byte, error) {
 	var provider Provider
