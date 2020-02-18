@@ -24,8 +24,8 @@ type Tx struct {
 	S            *big.Int  `json:"s" gencodec:"required"`
 }
 
-// NewTx create new eth tx
-func newTx(nonce uint64, to string, amount, gasPrice *fixed.Number, gasLimit *big.Int, data []byte) *Tx {
+// New create new eth tx
+func New(nonce uint64, to string, amount, gasPrice *fixed.Number, gasLimit *big.Int, data []byte) *Tx {
 
 	var recpoint *[20]byte
 
