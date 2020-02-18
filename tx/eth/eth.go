@@ -5,7 +5,6 @@ import (
 	"math/big"
 	"strings"
 
-	"github.com/libs4go/bcf4go/key"
 	"github.com/libs4go/bcf4go/rlp"
 	"github.com/libs4go/bcf4go/sha3"
 	"github.com/libs4go/fixed"
@@ -60,7 +59,7 @@ func New(nonce uint64, to string, amount, gasPrice *fixed.Number, gasLimit *big.
 }
 
 // Sign .
-func (tx *Tx) Sign(k key.Key) (string, error) {
+func (tx *Tx) Sign(signF func([]byte) ([]byte, error)) (string, error) {
 	hw := sha3.NewKeccak256()
 
 	rlp.Encode(hw, []interface{}{
@@ -76,7 +75,7 @@ func (tx *Tx) Sign(k key.Key) (string, error) {
 
 	hw.Sum(hash[:0])
 
-	sig, err := key.SignWithKey(k, hash[:])
+	sig, err := signF(hash[:])
 
 	if err != nil {
 		return "", err
