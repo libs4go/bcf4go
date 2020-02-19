@@ -241,10 +241,7 @@ func (encoding *encodingImpl) decryptKeyV3(
 	calculatedMAC := hasher.Sum(nil)
 
 	if !bytes.Equal(calculatedMAC, mac) {
-		return nil, nil, errors.New(fmt.Sprintf("%s\n%s\n%s",
-			ErrDecrypt,
-			hex.EncodeToString(calculatedMAC),
-			hex.EncodeToString(mac)))
+		return nil, nil, ErrDecrypt
 	}
 
 	plainText, err := aesCTRXOR(derivedKey[:16], cipherText, iv)
