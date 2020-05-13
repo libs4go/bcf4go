@@ -235,6 +235,6 @@ func init() {
 }
 
 // Vendor register vendor did provider
-func Vendor(name string) {
-	key.RegisterProvider(&didProvider{name: "did", vendor: name})
+func Vendor(name string, vendor string) {
+	key.RegisterProvider(&didProvider{name: name, vendor: vendor})
 }
