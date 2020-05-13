@@ -231,5 +231,5 @@ func (provider *didProvider) Sign(priKey []byte, hashed []byte) ([]byte, error) 
 }
 
 func init() {
-	key.RegisterProvider(&didProvider{name: "did"})
+	key.RegisterProvider(&didProvider{name: "did", vendor: "lib4go"})
 }

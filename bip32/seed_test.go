@@ -3,6 +3,8 @@ package bip32
 import (
 	"crypto/elliptic"
 	"encoding/hex"
+	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/libs4go/bcf4go/bip44"
@@ -36,4 +38,14 @@ func TestSeed(t *testing.T) {
 	require.NoError(t, err)
 
 	println(hex.EncodeToString(k.PrivateKey))
+}
+
+func TestOutput(t *testing.T) {
+	s := "canal walnut regular license dust liberty story expect repeat design picture medal"
+
+	ss := strings.Split(s, " ")
+
+	for i, _ := range ss {
+		println(fmt.Sprintf(`MnemonicWord(word:"\n",index:%d),`, i+1))
+	}
 }
