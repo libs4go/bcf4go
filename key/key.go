@@ -252,6 +252,12 @@ func DriveKey(providerName string, mnemonic string, path string) (Key, error) {
 	if err := getProvider(providerName, &provider); err != nil {
 		return nil, errors.Wrap(err, "provider with name %s not found, call RegisterProvider first", providerName)
 	}
+	// check mnemonic
+	_, err := bip39.MnemonicToByteArray(mnemonic, bip39.ENUS())
+
+	if err != nil {
+		return nil, errors.Wrap(err, "invalid mnemonic")
+	}
 
 	masterkey, err := bip32.FromMnemonic(provider, mnemonic, "")
 
