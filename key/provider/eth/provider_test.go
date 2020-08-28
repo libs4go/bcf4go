@@ -1,7 +1,6 @@
 package eth
 
 import (
-	"bytes"
 	"encoding/hex"
 	"testing"
 
@@ -20,32 +19,32 @@ func TestEthKey(t *testing.T) {
 	println(len(k.PriKey()))
 }
 
-func TestWeb3Encryptor(t *testing.T) {
-	k, err := key.RandomKey("eth")
+// func TestWeb3Encryptor(t *testing.T) {
+// 	k, err := key.RandomKey("eth")
 
-	require.NoError(t, err)
+// 	require.NoError(t, err)
 
-	var buff bytes.Buffer
+// 	var buff bytes.Buffer
 
-	err = key.Encode("web3.standard", k.PriKey(), map[string]string{
-		"password": "test",
-		"address":  k.Address(),
-	}, &buff)
+// 	err = key.Encode("web3.standard", k.PriKey(), map[string]string{
+// 		"password": "test",
+// 		"address":  k.Address(),
+// 	}, &buff)
 
-	require.NoError(t, err)
+// 	require.NoError(t, err)
 
-	println(buff.String())
+// 	println(buff.String())
 
-	k2, err := key.Decode("web3.standard", "eth", map[string]string{
-		"password": "test",
-	}, &buff)
+// 	k2, err := key.Decode("web3.standard", "eth", map[string]string{
+// 		"password": "test",
+// 	}, &buff)
 
-	require.NoError(t, err)
+// 	require.NoError(t, err)
 
-	require.Equal(t, k.Address(), k2.Address())
-	require.Equal(t, k.PriKey(), k2.PriKey())
+// 	require.Equal(t, k.Address(), k2.Address())
+// 	require.Equal(t, k.PriKey(), k2.PriKey())
 
-}
+// }
 
 func TestMnemonic(t *testing.T) {
 	mnemonic, err := key.RandomMnemonic(16)
