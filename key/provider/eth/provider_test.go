@@ -1,7 +1,6 @@
 package eth
 
 import (
-	"encoding/hex"
 	"testing"
 
 	"github.com/libs4go/bcf4go/key"
@@ -58,14 +57,4 @@ func TestMnemonic(t *testing.T) {
 	require.NoError(t, err)
 
 	println(k.Address())
-}
-
-func TestFromMnemonic(t *testing.T) {
-	k, err := key.DriveKey("eth", "canal walnut regular license dust liberty story expect repeat design picture medal", "m/44'/60'/0'/0/0")
-
-	require.NoError(t, err)
-
-	println(k.Address())
-
-	println(hex.EncodeToString(k.PriKey()))
 }

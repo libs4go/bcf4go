@@ -1,6 +1,7 @@
 package eth
 
 import (
+	"encoding/hex"
 	"fmt"
 	"testing"
 
@@ -22,6 +23,21 @@ func TestSign(t *testing.T) {
 
 }
 
+func TestConstructor(t *testing.T) {
+	arg := PackNumeric(hex.EncodeToString([]byte("Hello, Hardhat!")), 32)
+
+	println(fmt.Sprintf("%s%s", Encode("constructor(_greeting)"), arg))
+}
+
 func encodeTest(method string) {
 	println(fmt.Sprintf("%s: %s", method, Encode(method)))
+}
+
+func TestUniswap(t *testing.T) {
+	token := float64(100000)
+	usd := float64(10000000)
+
+	k := token * usd
+
+	println(k)
 }

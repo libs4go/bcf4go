@@ -1,4 +1,4 @@
-package eth
+package did
 
 import (
 	"crypto/ecdsa"

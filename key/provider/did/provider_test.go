@@ -1,4 +1,4 @@
-package eth
+package did
 
 import (
 	"encoding/hex"
