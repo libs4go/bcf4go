@@ -6,6 +6,7 @@ import (
 
 	"github.com/libs4go/bcf4go/key"
 	_ "github.com/libs4go/bcf4go/key/encoding"
+	_ "github.com/libs4go/bcf4go/key/provider/eth"
 
 	"github.com/stretchr/testify/require"
 )
@@ -63,7 +64,9 @@ func TestMnemonic(t *testing.T) {
 
 	require.NoError(t, err)
 
-	_, err = key.DriveKey("eth", mnemonic, "m/44'/201910'/0'/0/0")
+	k, err := key.DriveKey("did", mnemonic, "m/44'/201910'/0'/0/0")
 
 	require.NoError(t, err)
+
+	println(k.Address())
 }

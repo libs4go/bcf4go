@@ -152,6 +152,10 @@ func (provider *didProvider) Recover(sig []byte, hash []byte) (pubkey []byte, er
 
 	publicKey, _, err := recoverable.Recover(curve, signature, hash)
 
+	if err != nil {
+		return nil, err
+	}
+
 	return ecdsax.PublicKeyBytes(publicKey), nil
 }
 
@@ -163,7 +167,7 @@ func (provider *didProvider) ValidAddress(address string) bool {
 		return false
 	}
 
-	if tokens[0] != provider.vendor {
+	if tokens[1] != provider.vendor {
 		return false
 	}
 
