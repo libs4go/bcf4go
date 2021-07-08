@@ -126,13 +126,13 @@ func (provider *didProvider) Verify(pubkey []byte, sig []byte, hash []byte) bool
 		V: new(big.Int).SetBytes(sig[2*size:]),
 	}
 
-	publicKey, _, err := recoverable.Recover(curve, signature, hash)
+	// publicKey, _, err := recoverable.Recover(curve, signature, hash)
 
-	if err != nil {
-		return false
-	}
+	// if err != nil {
+	// 	return false
+	// }
 
-	return signature.Verfiy(publicKey, hash)
+	return signature.Verfiy(ecdsax.BytesToPublicKey(curve, pubkey), hash)
 }
 
 func (provider *didProvider) Recover(sig []byte, hash []byte) (pubkey []byte, err error) {
