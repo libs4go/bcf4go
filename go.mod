@@ -3,7 +3,6 @@ module github.com/libs4go/bcf4go
 go 1.13
 
 require (
-	github.com/btcsuite/btcd v0.21.0-beta // indirect
 	github.com/dynamicgo/xerrors v0.0.0-20190219051451-ec7525ce5de1
 	github.com/libs4go/errors v0.0.3
 	github.com/libs4go/fixed v0.0.4
